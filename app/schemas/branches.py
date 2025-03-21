@@ -15,12 +15,12 @@ class BranchCreate(BaseModel):
     email: Optional[EmailStr] = None
     opening_hours: Optional[str] = None
     manager_name: Optional[str] = None
-    branch_opening_date: Optional[str] = None  # Store as string
+    branch_opening_date: Optional[str] = None 
     branch_status: str = "open"
     seating_capacity: Optional[int] = None
     parking_availability: bool = False
     wifi_availability: bool = False
-    image_url: Optional[str] = None  # Image path
+    image_url: Optional[str] = None
 
 class BranchResponse(BaseModel):
     id: str  # Ensure this field is required
