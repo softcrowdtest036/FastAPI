@@ -15,8 +15,7 @@ async def create_image(image_data: dict, file: UploadFile) -> ImageResponse:
     
     image_data["file_path"] = file_path
     image_data["created_at"] = datetime.utcnow()
-    
-    # Ensure categoryId is stored as a string (if necessary)
+
     if "category_id" in image_data:
         image_data["categoryId"] = str(image_data["category_id"])
     
@@ -54,7 +53,6 @@ async def update_image(image_id: str, image_data: dict, file: Optional[UploadFil
             buffer.write(await file.read())
         image_data["file_path"] = file_path
 
-    # Update the image in the database
     await mongodb.get_database().images.update_one({"_id": ObjectId(image_id)}, {"$set": image_data})
     updated_image = await get_image(image_id)
     return updated_image
