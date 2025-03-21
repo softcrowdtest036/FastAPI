@@ -1,6 +1,5 @@
 ##Flow for  Restaurant Banjos App:##
 
-is to allow users to see nearby restaurant branches on a map in real time. Below is the best approach with a step-by-step flow for both **Frontend (React)** and **Backend (FastAPI).**
 
 ## ** FRONTEND (React + Leaflet/Google Maps)**
 ### **1.Get User Location**
