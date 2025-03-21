@@ -7,7 +7,7 @@ class JobPositionBase(BaseModel):
     description: str
     min_salary: float
     max_salary: float
-    branch_name: str  # Changed from branch_id to branch_name
+    branch_name: str 
     job_type: str
     image_url: Optional[str] = None
 
