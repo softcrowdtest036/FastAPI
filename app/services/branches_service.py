@@ -4,8 +4,6 @@ from fastapi import UploadFile
 from bson import ObjectId
 from app.core.database import mongodb
 from app.models.branches import BranchModel
-
-# Ensure static/images directory exists
 os.makedirs("static/images", exist_ok=True)
 
 async def save_image(file: UploadFile) -> str:
