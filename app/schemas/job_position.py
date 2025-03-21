@@ -9,7 +9,7 @@ class JobPositionBase(BaseModel):
     max_salary: float
     branch_name: str
     job_type: str
-    status: str = Field(default="active", regex="^(active|inactive)$")  # Add status field
+    status: str = Field(default="active", regex="^(active|inactive)$")
     image_url: Optional[str] = None
 
 class JobPositionCreate(JobPositionBase):
