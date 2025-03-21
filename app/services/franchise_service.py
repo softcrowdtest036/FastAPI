@@ -25,7 +25,7 @@ async def create_franchise_request(db: AsyncIOMotorDatabase, request_data: Franc
     </body>
     </html>
     """
-    # send_email(request_data.user_email, subject, body)  # Uncomment and implement this function
+    # send_email(request_data.user_email, subject, body) 
 
     return franchise_dict
 
@@ -70,7 +70,7 @@ async def update_request_status(db: AsyncIOMotorDatabase, request_id: str, statu
         </body>
         </html>
         """
-        # send_email(request["user_email"], subject, body)  # Uncomment and implement this function
+        # send_email(request["user_email"], subject, body) 
 
     return {"updated": result.modified_count}
 
