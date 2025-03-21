@@ -7,11 +7,9 @@ from typing import Optional
 from app.utils.email import send_email
 from app.models.job_applications import JobApplicationCreate, JobApplicationResponse, ALLOWED_STATUSES
 from jinja2 import Environment, FileSystemLoader
-
-# Setup for saving resumes
+# resume
 os.makedirs("static/resumes", exist_ok=True)
 
-# Jinja2 environment for loading email templates
 env = Environment(loader=FileSystemLoader('app/templates/emails'))
 
 async def save_resume(file: UploadFile) -> str:
@@ -33,12 +31,10 @@ async def create_job_application(
     data["created_at"] = datetime.utcnow()
     data["updated_at"] = datetime.utcnow()
 
-    # Insert into DB
     result = await db.job_applications.insert_one(data)
     inserted = await db.job_applications.find_one({"_id": result.inserted_id})
     inserted["id"] = str(inserted.pop("_id"))
 
-    # ---- Send Confirmation Email ----
     subject = "Thank You for Applying!"
     template = env.get_template("application_confirmation.html")
     html_body = template.render(
@@ -82,8 +78,6 @@ async def update_job_application_status(db: AsyncIOMotorDatabase, application_id
         {"_id": ObjectId(application_id)},
         {"$set": {"status": status, "updated_at": datetime.utcnow()}}
     )
-
-    # Fetch application to send status update email
     app = await db.job_applications.find_one({"_id": ObjectId(application_id)})
     if app:
         subject = f"Application Status Updated: {status}"
