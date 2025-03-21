@@ -8,5 +8,5 @@ class CategoryModel(BaseModel):
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:
-        populate_by_name = True  # Ensures alias `_id` is respected
+        populate_by_name = True 
         from_attributes = True
