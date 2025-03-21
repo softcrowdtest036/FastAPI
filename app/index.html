@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">🍽️ Menu Management</h1>
+
+    <!-- Add Category Section -->
+    <div class="card p-4 mb-4">
+        <h3>Add Category</h3>
+        <div class="input-group">
+            <input type="text" id="category_name" class="form-control" placeholder="Category Name">
+            <button class="btn btn-primary" onclick="addCategory()">Add</button>
+        </div>
+    </div>
+
+    <!-- Add Menu Item Section -->
+    <div class="card p-4 mb-4">
+        <h3>Add Menu Item</h3>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <input type="text" id="item_name" class="form-control" placeholder="Item Name">
+            </div>
+            <div class="col-md-4">
+                <input type="text" id="item_desc" class="form-control" placeholder="Description">
+            </div>
+            <div class="col-md-2">
+                <input type="number" id="item_price" class="form-control" placeholder="Price">
+            </div>
+            <div class="col-md-2">
+                <select id="category_id" class="form-select"></select>
+            </div>
+            <div class="col-md-12">
+                <input type="file" id="item_image" class="form-control">
+            </div>
+            
+            <div class="col-md-2">
+                <div class="form-check">
+                    <input type="checkbox" id="item_available" class="form-check-input">
+                    <label class="form-check-label">Available</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <button class="btn btn-success w-100" onclick="addMenuItem()">Add Item</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu Items Section -->
+    <div class="card p-4">
+        <h3>Menu Items</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Available</th>
+                </tr>
+            </thead>
+            <tbody id="menu_list">
+                <tr><td colspan="5" class="text-center">Loading menu...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const API_BASE_URL = "http://127.0.0.1:8000"; // FastAPI Backend URL
+
+    async function fetchCategories() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/menu/categories`);
+            if (!response.ok) throw new Error(`Error: ${response.status}`);
+            const categories = await response.json();
+            document.getElementById('category_id').innerHTML = categories.map(cat => 
+                `<option value="${cat.id}">${cat.name}</option>`
+            ).join('');
+        } catch (error) {
+            console.error("Failed to fetch categories:", error);
+        }
+    }
+
+    async function addCategory() {
+        const name = document.getElementById('category_name').value.trim();
+        if (!name) return alert("Category name cannot be empty!");
+        try {
+            const response = await fetch(`${API_BASE_URL}/menu/category/add`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name })
+            });
+            if (!response.ok) throw new Error(`Error: ${response.status}`);
+            alert("Category added successfully!");
+            fetchCategories();
+        } catch (error) {
+            console.error("Failed to add category:", error);
+        }
+    }
+
+    async function addMenuItem() {
+        let formData = new FormData();
+        formData.append("name", document.getElementById("name").value);
+        formData.append("description", document.getElementById("description").value);
+        formData.append("price", document.getElementById("price").value);
+        formData.append("category_id", document.getElementById("category_id").value);
+        formData.append("is_available", document.getElementById("is_available").checked);
+        formData.append("image", document.getElementById("image").files[0]); // File upload
+    
+        try {
+            let response = await fetch("http://127.0.0.1:8000/menu/add", {
+                method: "POST",
+                body: formData
+            });
+    
+            let result = await response.json();
+            console.log("Menu item added:", result);
+        } catch (error) {
+            console.error("Failed to add menu item:", error);
+        }
+    }
+    
+    async function fetchMenu() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/menu/`);
+            if (!response.ok) throw new Error(`Error: ${response.status}`);
+            const menuItems = await response.json();
+            document.getElementById('menu_list').innerHTML = menuItems.map(item => 
+                `<tr>
+                    <td><img src="${API_BASE_URL}/${item.image_url}" alt="Menu Image" width="50"></td>
+                    <td>${item.name}</td>
+                    <td>${item.description || ""}</td>
+                    <td>$${item.price.toFixed(2)}</td>
+                    <td><strong>${item.category_name}</strong></td>
+                    <td>${item.is_available ? "Available" : "Not Available"}</td>
+                </tr>`
+            ).join('');
+        } catch (error) {
+            console.error("Failed to fetch menu:", error);
+        }
+    }
+    
+    window.onload = () => {
+        fetchCategories();
+        fetchMenu();
+    };
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
