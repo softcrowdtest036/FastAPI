@@ -10,10 +10,10 @@ app = FastAPI(title="Banjo's Restaurant API")
 # CORS Configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins (change this in production)
+    allow_origins=["*"], 
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all methods
-    allow_headers=["*"],  # Allow all headers
+    allow_methods=["*"], 
+    allow_headers=["*"], 
 )
 # Serve static files (e.g., images)
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -30,7 +30,6 @@ app.include_router(image.router,prefix="/images", tags=["Image"])
 app.include_router(online_order_link.router, prefix="/api/online-order-links", tags=["Online Order Links"])
 app.include_router(testimonial.router, prefix="/testimonial", tags=["Testimonial"])
 
-# Lifecycle events for database connection
 @app.on_event("startup")
 async def startup_db():
     """Connect to MongoDB on application startup."""
