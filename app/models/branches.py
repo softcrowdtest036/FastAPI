@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field, EmailStr
 from typing import Optional
 
 class BranchModel(BaseModel):
-    id: str = Field(..., alias="_id")  # Convert MongoDB _id to id
+    id: str = Field(..., alias="_id")
     name: str
     latitude: float
     longitude: float
@@ -23,5 +23,5 @@ class BranchModel(BaseModel):
     image_url: Optional[str] = None
 
     class Config:
-        populate_by_name = True  # Ensures alias `_id` is respected
+        populate_by_name = True 
         from_attributes = True
