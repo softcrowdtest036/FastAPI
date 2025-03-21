@@ -18,4 +18,4 @@ class GalleryCategoryResponse(BaseModel):
     created_at: datetime
 
     class Config:
-        from_attributes = True  # Updated from orm_mode
+        from_attributes = True 
