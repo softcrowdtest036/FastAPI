@@ -15,6 +15,6 @@ class FranchiseRequestCreate(BaseModel):
     request_status: str = Field(default="pending", example="pending")
 
 class FranchiseRequestResponse(FranchiseRequestCreate):
-    id: str  # MongoDB uses ObjectId, which will be stored as a string
+    id: str  
     created_at: datetime
     updated_at: datetime
