@@ -49,8 +49,7 @@
 | Component  | Technology |
 |------------|------------|
 | **Frontend** | React.js, Leaflet.js (or Google Maps), React Query |
-| **Backend** | FastAPI, PostgreSQL, PostGIS, Haversine Formula |
-| **Database** | PostgreSQL (with latitude/longitude storage) |
+| **Backend** | FastAPI, MongoDb |
 | **Deployment** | AWS, Vercel (for frontend), Docker (for backend) |
 
 ---
